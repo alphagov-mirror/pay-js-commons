@@ -1,6 +1,7 @@
 const fs = require('fs')
-const path = require('path')
-const template = fs.readFileSync(path.join(__dirname, 'banner.html'), 'utf-8')
+
+// eslint-disable-next-line node/no-path-concat
+const template = fs.readFileSync(`${__dirname}/banner.html`, 'utf-8')
 
 function hasAnalyticsConsent() {
 

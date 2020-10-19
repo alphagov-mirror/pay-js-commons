@@ -8,7 +8,7 @@
     "clean": "rm -rf lib",
     "copy": "cp -R src/data lib/data",
     "transpile": "npm run clean && babel src --out-dir lib --ignore '**/*.test.js' && npm run copy",
-    "browserify-analytics": "browserify -t brfs src/analytics/index.js -o lib/analytics/dist/cookies.js",
+    "browserify-analytics": "browserify src/analytics/index.js -o lib/analytics/dist/cookies.js -t brfs -t babelify",
     "prepare": "npm run transpile && npm run browserify-analytics",
     "test": "karma start"
   },
