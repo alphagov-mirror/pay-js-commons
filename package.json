@@ -8,7 +8,8 @@
     "clean": "rm -rf lib",
     "copy": "cp -R src/data lib/data",
     "transpile": "npm run clean && babel src --out-dir lib --ignore '**/*.test.js' && npm run copy",
-    "prepare": "npm run transpile",
+    "browserify-analytics": "browserify -t brfs src/analytics/index.js -o lib/analytics/dist/cookies.js",
+    "prepare": "npm run transpile && npm run browserify-analytics",
     "test": "karma start"
   },
   "husky": {
@@ -89,6 +90,7 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "babelify": "^10.0.0",
+    "brfs": "^2.0.2",
     "browser-env": "^3.2.6",
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
