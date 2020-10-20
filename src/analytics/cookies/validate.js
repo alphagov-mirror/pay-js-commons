@@ -44,7 +44,7 @@ function rejectAnalyticsCookies() {
   hideBannerIfExists()
 }
 
-function createBannerHTMLElement() {
+function createBannerHTMLElement(consentProvidedCallback = () => {}) {
   const banner = document.createElement('div')
   banner.id = ANALYTICS_CONSENT_BANNER_ID
   banner.innerHTML = template.trim()
@@ -54,18 +54,23 @@ function createBannerHTMLElement() {
 
   if (acceptButton && rejectButton) {
     acceptButton.addEventListener('click', acceptAnalyticsCookies)
+    acceptButton.addEventListener('click', consentProvidedCallback)
     rejectButton.addEventListener('click', rejectAnalyticsCookies)
   }
 
   return banner
 }
 
-function showBannerIfConsentNotSet() {
+/**
+ * ConsentProvidedCallback: function - generic callback that will be called
+ *                                     if and only if the user provides consent
+ */
+function showBannerIfConsentNotSet(consentProvidedCallback = () => {}) {
   const consentCookieNotSet = !Cookies.get(GOVUK_PAY_ANALYTICS_CONSENT_COOKIE_NAME)
   const banner = document.querySelector(`#${ANALYTICS_CONSENT_BANNER_ID}`)
 
   if (consentCookieNotSet && !banner) {
-    const banner = createBannerHTMLElement()
+    const banner = createBannerHTMLElement(consentProvidedCallback)
     document.body.prepend(banner)
   }
 }
