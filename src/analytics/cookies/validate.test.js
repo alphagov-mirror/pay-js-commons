@@ -1,7 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 "use strict";
 const JsCookie = require("js-cookie");
 const validate = require("./validate")
-const testBannerTemplate = require("./test-banner-template");
 
 describe("Cookie Banner", () => {
   beforeEach(() => {
@@ -75,6 +78,30 @@ describe("Cookie Banner", () => {
       ).toBe(0);
   })
   })
+
+  describe("hasAnalyticsConsent", () => {
+    it(`return FALSE when no cookie present`, () => {
+      const hasAnalyticsConsent = validate.hasAnalyticsConsent() 
+
+      expect(hasAnalyticsConsent).toEqual(false);
+    }); 
+
+    it(`return TRUE when cookie present and consent = true`, () => {
+      JsCookie.set("govuk_pay_cookie_policy", "{\"analytics\": true}");
+      const hasAnalyticsConsent = validate.hasAnalyticsConsent() 
+
+      expect(hasAnalyticsConsent).toEqual(true);
+    }); 
+
+    it(`return FALSE when cookie present and consent = false`, () => {
+      JsCookie.set("govuk_pay_cookie_policy", "{\"analytics\": false}");
+      const hasAnalyticsConsent = validate.hasAnalyticsConsent() 
+
+      expect(hasAnalyticsConsent).toEqual(false);
+    });
+  })
+
+  // TODO - Need to add confirmation message and then reinstate tests below
 
   // describe("New User", () => {
 

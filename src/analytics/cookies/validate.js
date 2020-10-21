@@ -17,12 +17,16 @@ function isLocalDomain() {
   return ['localhost', '127.0.0.1', ''].includes(window.location.hostname)
 }
 
+function getCookieDomain() {
+  return window.location.hostname.replace(/^www\./, '.')
+}
+
 function setAnalyticsCookie(userConsentedToAnalytics = false) {
   const cookieValue = JSON.stringify({ analytics: userConsentedToAnalytics })
   const cookieAttributes = {
     expires: 365,
     path: '/',
-    domain: isLocalDomain() ? undefined : 'payments.service.gov.uk'
+    domain: isLocalDomain() ? undefined : getCookieDomain()
   }
   Cookies.set(GOVUK_PAY_ANALYTICS_CONSENT_COOKIE_NAME, cookieValue, cookieAttributes)
 }
@@ -69,9 +73,7 @@ function showBannerIfConsentNotSet(consentProvidedCallback = () => {}) {
   const consentCookieNotSet = !Cookies.get(GOVUK_PAY_ANALYTICS_CONSENT_COOKIE_NAME)
   const banner = document.querySelector(`#${ANALYTICS_CONSENT_BANNER_ID}`)
 
-  console.log('111')
   if (consentCookieNotSet && !banner) {
-    console.log('222')
     const banner = createBannerHTMLElement(consentProvidedCallback)
     document.body.prepend(banner)
   }
