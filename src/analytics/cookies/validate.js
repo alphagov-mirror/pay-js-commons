@@ -5,7 +5,7 @@ const Cookies = require('js-cookie')
 const template = fs.readFileSync(`${__dirname}/banner.html`, 'utf-8')
 
 const GOVUK_PAY_ANALYTICS_CONSENT_COOKIE_NAME = 'govuk_pay_cookie_policy'
-const ANALYTICS_CONSENT_BANNER_ID = 'analytics-consent-banner'
+const ANALYTICS_CONSENT_BANNER_ID = 'pay-cookie-banner'
 
 function hasAnalyticsConsent() {
   const cookie = Cookies.get(GOVUK_PAY_ANALYTICS_CONSENT_COOKIE_NAME)
@@ -69,7 +69,9 @@ function showBannerIfConsentNotSet(consentProvidedCallback = () => {}) {
   const consentCookieNotSet = !Cookies.get(GOVUK_PAY_ANALYTICS_CONSENT_COOKIE_NAME)
   const banner = document.querySelector(`#${ANALYTICS_CONSENT_BANNER_ID}`)
 
+  console.log('111')
   if (consentCookieNotSet && !banner) {
+    console.log('222')
     const banner = createBannerHTMLElement(consentProvidedCallback)
     document.body.prepend(banner)
   }
